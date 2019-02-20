@@ -1,0 +1,34 @@
+<div id="command_management_show">
+
+  <div id="twitter_share">
+    <%#=　当webサービスをツイートするボタンを表示  %>
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
+
+  <%#=ファイルでコマンドを取り込む  %>
+  <div id="take_in_command_with_file">
+    <%= link_to 'ファイル選択', { controller: :teke_in_command_with_file, action: :select_file) }, { id: :file_select }%>
+    <%= link_to 'コマンド取り込み', { controller: :teke_in_command_with_file, action: :take_in_command) }, { id: :take_in_command }%>
+  </div>
+
+  <%#= コマンドをカテゴリごとに表示する %>
+  <% @categories.each do |category| %>
+  <ul id='category_all'>
+    <li id="category_name"><%= category.name %></li>
+    <%= link_to 'add', category, { controller: :categories, action: :add }, { class: :category_operation }%>
+    <%= link_to 'edit', edit_command_path(category), { controller: :categories, action: :edit }, { class: :category_operation }%>
+    <%= link_to 'destroy', category, method: :delete, data: { confirm: 'カテゴリを削除してもいいですか？関連するコマンドが全て削除されます。' }, { controller: :categories, action: :destroy) }, { class: :category_operation }%>
+    <% category.commands.each do |command| %>
+    <ul id="command_all">
+      <li id="command_name"><%= command.name %></li>
+      <li id="command_contents"><%= command.contents %></li>
+      <li id="command_description"><%= command.description %></li>
+      <%= link_to 'add', command, { controller: :commands, action: :add }, { class: :commands_operation } %>
+      <%= link_to 'edit', edit_command_path(command), { controller: :commands, action: :edit }, { class: :commands_operation }%>
+      <%= link_to 'destroy', command, method: :delete, data: { confirm: 'コマンドを削除してもいいですか？' }, { controller: :commands, action: :destory }, { class: :commands_operation }%>
+    </ul>
+  </ul>
+  <% end %>
+
+</div>

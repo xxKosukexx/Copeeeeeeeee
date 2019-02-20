@@ -1,0 +1,19 @@
+current directory: /Users/kosuke/Documents/ruby_project/Copeeeeeeeee/vendor/bundle/gems/byebug-11.0.0/ext/byebug
+/Users/kosuke/.rbenv/versions/2.4.1/bin/ruby -r ./siteconf20190219-51459-xer9hn.rb extconf.rb
+creating Makefile
+
+current directory: /Users/kosuke/Documents/ruby_project/Copeeeeeeeee/vendor/bundle/gems/byebug-11.0.0/ext/byebug
+make "DESTDIR=" clean
+
+current directory: /Users/kosuke/Documents/ruby_project/Copeeeeeeeee/vendor/bundle/gems/byebug-11.0.0/ext/byebug
+make "DESTDIR="
+compiling breakpoint.c
+compiling byebug.c
+compiling context.c
+compiling locker.c
+compiling threads.c
+linking shared-object byebug/byebug.bundle
+
+current directory: /Users/kosuke/Documents/ruby_project/Copeeeeeeeee/vendor/bundle/gems/byebug-11.0.0/ext/byebug
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 byebug.bundle ./.gem.20190219-51459-1hkpiog/byebug

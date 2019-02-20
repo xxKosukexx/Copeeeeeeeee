@@ -1,0 +1,9 @@
+<div class="operation">
+
+  <h1 class="operation_title">Edit Command</h1>
+
+  <%= render 'form', command: @command %>
+
+  <%= link_to 'Back', { controller: :command_management, action: :show }, { id: :back_button } %>
+
+</div>

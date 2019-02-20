@@ -1,0 +1,18 @@
+<div id="login">
+  <h1 id="login_title">Login User</h1>
+
+  <p style="color: Red"><%= @error %></p>
+  <%= form_tag action: :login do %>
+    <div class="field">
+      <%= label_tag :username, 'ユーザー名' %><br />
+      <%= text_field_tag :username, '', size: 20, :maxlength 20 %>
+    </div>
+    <div class="field">
+      <%= label_tag :password, 'パスワード' %><br />
+      <%= password_field_tag :password, '', size: 20, :maxlength 20 %>
+    </div>
+    <!-- ログイン後にリダイレクトするアクションを渡す -->
+    <%= hidden_field_tag :referer, flash[:referer] %>
+    <%= submit_tag 'ログイン' %>
+  <% end %>
+</div>

@@ -1,0 +1,12 @@
+<div id="entrance_screen">
+  <div id="entrance_comment">
+    <p>
+      当webサービスは定型文等、なんども入力するための文章等を簡単にコピペするサービスです。
+      作業効率化のお役に経てればと思います。
+    </p>
+  </div>
+  <div id="authentication">
+    <%= link_to 'ユーザー登録', { controller: :users, action: :add) }, { id: :authentication_user } %>
+    <%= link_to 'ログイン' { controller: :authentication_management, action: :login) }, { id: :authentication_login } %>
+  </div>
+</div>

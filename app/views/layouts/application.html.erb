@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Copeeeeeeeee</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1 id="title">Copeeeeeeeee</h1>
+      <div id="link">
+        <%= link_to 'top', { controller: :authentication_management, action: :entrance_screen }, { class: :header_link } %>
+        <%= link_to 'サービスについて', { controller: :service_info, action: :info }, { class: :header_link } %>
+        <%= link_to 'ユーザー登録', { controller: :users, action: :add }, { class: :header_link } %>
+        <%= link_to 'ユーザー削除', { controller: :users, action: :destroy }, { class: :header_link } %>
+        <%= link_to 'ログアウト', { controller: :authentication_management, action: :logout }, { class: :header_link } %>
+      </div>
+    </div>
+    <%= yield %>
+  </body>
+  <div id="footer">
+    <small>Copyright (c) 2019 Copeeeeeeeee All Rights Reserved.</small>
+  </div>
+</html>

@@ -1,0 +1,2 @@
+class ServiceInfoController < ApplicationController
+end
