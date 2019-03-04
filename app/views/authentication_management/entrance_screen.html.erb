@@ -6,7 +6,7 @@
     </p>
   </div>
   <div id="authentication">
-    <%= link_to 'ユーザー登録', { controller: :users, action: :add) }, { id: :authentication_user } %>
-    <%= link_to 'ログイン' { controller: :authentication_management, action: :login) }, { id: :authentication_login } %>
+    <%= link_to 'ユーザー登録', { controller: :users, action: :add }, { id: :authentication_user } %>
+    <%= link_to 'ログイン', { controller: :authentication_management, action: :login }, { id: :authentication_login } %>
   </div>
 </div>
