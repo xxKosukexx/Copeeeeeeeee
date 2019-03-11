@@ -11,8 +11,11 @@
       <%= label_tag :password, 'パスワード' %><br />
       <%= password_field_tag :password, '', size: 20, :maxlength 20 %>
     </div>
-    <!-- ログイン後にリダイレクトするアクションを渡す -->
-    <%= hidden_field_tag :referer, flash[:referer] %>
+    <%#= ログイン後にリダイレクトするアクションを渡す %>
+    <%= hidden_field_tag :after_login_page, flash[:after_login_page] %>
+    <%#= ログイン失敗時に必要なコントローラー名とアクション名を渡す %>
+    <%= hidden_field_tag :re_login_controller, flash[:re_login_controller] %>
+    <%= hidden_field_tag :re_login_action, flash[:re_login_action] %>
     <%= submit_tag 'ログイン' %>
   <% end %>
 </div>

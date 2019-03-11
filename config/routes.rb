@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get 'users/destroy'
   get 'users/twitter_add'
   get 'users/twitter_destroy'
+  get 'auth/twitter'
+  get '/auth/:provider/callback', to: 'authentication_management#twitter_login'
   get 'authentication_management/login'
   get 'authentication_management/logout'
   get 'authentication_management/entrance_screen'

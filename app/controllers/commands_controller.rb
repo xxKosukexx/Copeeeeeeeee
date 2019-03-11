@@ -1,5 +1,5 @@
 class CommandsController < ApplicationController
-  before_action :set_command, only: [:show, :edit, :update, :destroy]
+  before_action :set_command, only: [:show, :edit, :update, :delete]
 
   # GET /commands
   # GET /commands.json

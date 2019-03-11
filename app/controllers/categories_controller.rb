@@ -2,7 +2,7 @@ class CategoriesController < ApplicationController
   def add
   end
 
-  def destroy
+  def delete
   end
 
   def edit

@@ -6,6 +6,16 @@ ruby '2.4.1'
 #use database mysql
 gem 'mysql2'
 
+#password_regestを使用するために
+gem 'bcrypt'
+
+#twitter認証をするため。
+gem 'omniauth'
+gem 'omniauth-twitter'
+
+#railsの環境変数用
+gem 'dotenv-rails'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.2'
 # Use sqlite3 as the database for Active Record
