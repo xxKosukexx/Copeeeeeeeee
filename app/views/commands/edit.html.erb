@@ -4,6 +4,6 @@
 
   <%= render 'form', command: @command %>
 
-  <%= link_to 'Back', { controller: :command_management, action: :show }, { id: :back_button } %>
+  <%= link_to 'Back', command_management_show_path, { id: :back_button } %>
 
 </div>

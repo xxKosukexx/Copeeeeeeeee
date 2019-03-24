@@ -1,4 +1,4 @@
-<%= form_for(user) do |f| %>
+<%= form_with(model: user, local: true) do |form| %>
   <% if user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -12,16 +12,16 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name, :maxlength 20 %>
+    <%= form.label :name, 'ユーザー名' %>
+    <%= form.text_field :name, size: ApplicationController::FORM_FIELD_NAME_SIZE, :maxlength ApplicationController::FORM_FIELD_NAME_MAX_LENGTH %>
   </div>
 
   <div class="field">
-    <%= f.label :password %>
-    <%= f.password_field :password, :maxlength 20 %>
+    <%= form.label :password, 'パスワード' %>
+    <%= form.text_field :password, ApplicationController::FORM_FIELD_PASSWORD_SIZE, :maxlength ApplicationController::FORM_FIELD_PASSWORD_MAX_LENGTH %>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= form.submit %>
   </div>
 <% end %>

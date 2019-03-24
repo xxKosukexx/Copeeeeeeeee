@@ -1,2 +1,0 @@
-class ServiceInfoController < ApplicationController
-end

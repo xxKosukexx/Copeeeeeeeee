@@ -1,11 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  provider: MyString
   name: MyString
   password_digest: MyString
-  twitter_uid: MyString
+  uid: MyString
 
 two:
+  provider: MyString
   name: MyString
   password_digest: MyString
-  twitter_uid: MyString
+  uid: MyString

@@ -4,6 +4,6 @@
 
   <%= render 'form', category: @category %>
 
-  <%= link_to 'Back', { controller: :command_management, action: :show }, { class: :back_button } %>
+  <%= link_to 'Back', command_management_show_path, { class: :back_button } %>
 
 </div>

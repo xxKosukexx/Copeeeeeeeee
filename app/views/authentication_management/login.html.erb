@@ -2,20 +2,25 @@
   <h1 class="operation_title">Login User</h1>
 
   <p style="color: Red"><%= @error %></p>
-  <%= form_tag action: :login do %>
+  <%= form_with(url: authentication_management_auth_path, local: true) do |form| %>
+
     <div class="field">
-      <%= label_tag :username, 'ユーザー名' %><br />
-      <%= text_field_tag :username, '', size: 20, :maxlength 20 %>
+      <%= form.label :username, 'ユーザー名' %>
+      <%= form.text_field :username, size: ApplicationController::FORM_FIELD_NAME_SIZE, :maxlength ApplicationController::FORM_FIELD_NAME_MAX_LENGTH %>
     </div>
+
     <div class="field">
-      <%= label_tag :password, 'パスワード' %><br />
-      <%= password_field_tag :password, '', size: 20, :maxlength 20 %>
+      <%= form.label :password, 'パスワード' %>
+      <%= form.text_field :password, size: ApplicationController::FORM_FIELD_PASSWORD_SIZE, :maxlength ApplicationController::FORM_FIELD_PASSWORD_MAX_LENGTH %>
     </div>
+
     <%#= ログイン後にリダイレクトするアクションを渡す %>
     <%= hidden_field_tag :after_login_page, flash[:after_login_page] %>
-    <%#= ログイン失敗時に必要なコントローラー名とアクション名を渡す %>
-    <%= hidden_field_tag :re_login_controller, flash[:re_login_controller] %>
-    <%= hidden_field_tag :re_login_action, flash[:re_login_action] %>
-    <%= submit_tag 'ログイン' %>
-  <% end %>
+
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+
+  <% end %><%#= #form_with_end %>
+
 </div>

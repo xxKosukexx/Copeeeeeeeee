@@ -6,7 +6,10 @@
     </p>
   </div>
   <div id="authentication">
-    <%= link_to 'ユーザー登録', { controller: :users, action: :add }, { id: :authentication_user } %>
-    <%= link_to 'ログイン', { controller: :authentication_management, action: :login }, { id: :authentication_login } %>
+    <%= link_to 'ユーザー登録', users_new_path, { id: :authentication_user } %>
+    <%= link_to 'ログイン', authentication_management_login_path, { id: :authentication_login } %>
+  </div>
+  <div id="twitter_auth">
+    <%= link_to 'Twitte認証', auth_twitter_path, { class: :twitter_button } %>
   </div>
 </div>

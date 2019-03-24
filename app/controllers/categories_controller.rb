@@ -1,8 +1,5 @@
 class CategoriesController < ApplicationController
-  def add
-  end
-
-  def delete
+  def new
   end
 
   def edit

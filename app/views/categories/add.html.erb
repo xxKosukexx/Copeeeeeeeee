@@ -1,9 +1,9 @@
-<div div="add_operation">
+<div div="new_operation">
 
-  <h1 class="operation_title">Add Category</h1>
+  <h1 class="operation_title">new Category</h1>
 
   <%= render 'form', category: @category %>
 
-  <%= link_to 'Back', { controller: :command_management, action: :show }, { class: :back_button } %>
+  <%= link_to 'Back', command_management_show_path, { class: :back_button } %>
 
 </div>

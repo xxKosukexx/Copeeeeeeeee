@@ -42,14 +42,6 @@ class CommandsController < ApplicationController
     end
   end
 
-
-
-  def add
-  end
-
-  def edit
-  end
-
   # DELETE /commands/1
   # DELETE /commands/1.json
   def destroy

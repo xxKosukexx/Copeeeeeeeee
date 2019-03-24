@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_10_010921) do
+ActiveRecord::Schema.define(version: 2019_03_22_010921) do
 
   create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
     t.string "name"
@@ -27,8 +27,9 @@ ActiveRecord::Schema.define(version: 2019_03_10_010921) do
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
+    t.string "provider"
     t.string "name"
-    t.string "twitter_uid"
+    t.string "uid"
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -10,19 +10,28 @@
   </head>
 
   <body>
-    <div id="header">
+    <header>
       <h1 id="title">Copeeeeeeeee</h1>
-      <div id="link">
-        <%= link_to 'top', { controller: :authentication_management, action: :entrance_screen }, { class: :header_link } %>
-        <%= link_to 'サービスについて', { controller: :service_info, action: :info }, { class: :header_link } %>
-        <%= link_to 'ユーザー登録', { controller: :users, action: :add }, { class: :header_link } %>
-        <%= link_to 'ユーザー削除', { controller: :users, action: :destroy }, { class: :header_link } %>
-        <%= link_to 'ログアウト', { controller: :authentication_management, action: :logout }, { class: :header_link } %>
+      <%#= ログイン名を表示する  %>
+      <div id="login_name">
+        <%= session[:username] %>
       </div>
-    </div>
+      <div id="link">
+        <%= link_to 'top', service_entrance_screen_path, { class: :header_link } %>
+        <%= link_to 'サービスについて', service_info_path, { class: :header_link } %>
+        <%= link_to 'ユーザー登録', users_new_path, { class: :header_link } %>
+        <%= link_to 'ユーザー削除', users_destroy_path, { class: :header_link } %>
+        <%= link_to 'ログアウト', authentication_management_logout_path, { class: :header_link } %>
+      </div>
+    </header>
+    <%#= 通知メッセージを表示する  %>
+    <p id='notice'><%= notice %></p>
+
+    <%#= 警告・エラーメッセージを表示する %>
+    <p id='alert'><%= alert %></p>
     <%= yield %>
   </body>
-  <div id="footer">
+  <footer>
     <small>Copyright (c) 2019 Copeeeeeeeee All Rights Reserved.</small>
-  </div>
+  </footer>
 </html>
