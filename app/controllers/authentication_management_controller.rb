@@ -7,7 +7,7 @@ class AuthenticationManagementController < ApplicationController
   #入力された情報で認証処理を実施する
   def auth
     #入力値に従ってユーザー情報を取得
-    usr = User.find_by(name: params[:username])
+    usr = User.find_by(provider: 'normal', name: params[:username])
     #ユーザー情報が存在し、認証（authenticate）に成功したら
     if usr && usr.authenticate(params[:password]) then
       #成功した場合はid値をセッションに設定し、もともとの要求ページにリダイレクト
@@ -30,6 +30,7 @@ class AuthenticationManagementController < ApplicationController
     #ユーザー登録処理で使用するために、フラッシュにデータを設定する。
     #そのまま渡すとデータサイズが大きすぎてエラーになるため、必要な分だけ渡す
     auth_data = request.env['omniauth.auth']
+    logger.debug("provider:#{request.env['omniauth.auth'][:provider]} name:#{request.env['omniauth.auth'][:info][:name]}")
     flash[:twitter_provider] = auth_data[:provider]
     flash[:twitter_uid] = auth_data[:uid]
     flash[:twitter_name] = auth_data[:info][:name]

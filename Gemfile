@@ -9,12 +9,14 @@ gem 'mysql2'
 #password_regestを使用するために
 gem 'bcrypt'
 
-#twitter認証をするため。
+#認証をするため。
 gem 'omniauth'
 gem 'omniauth-twitter'
 
 #railsの環境変数用
 gem 'dotenv-rails'
+
+gem "jquery-rails"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.2'

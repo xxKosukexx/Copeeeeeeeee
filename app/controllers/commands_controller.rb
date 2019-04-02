@@ -1,59 +1,51 @@
 class CommandsController < ApplicationController
-  before_action :set_command, only: [:show, :edit, :update, :delete]
+  COMMAND_NEW_SUCCESS = "コマンドの追加に成功しました。"
+  COMMAND_NEW_FAILURE = "コマンドの追加に失敗しました。"
+  COMMAND_EDIT_SUCCESS = "コマンドの編集に成功しました。"
+  COMMAND_EDIT_FAILURE = "コマンドの編集に失敗しました。"
+  COMMAND_DESTROY_SUCCESS = "コマンドの削除に成功しました。"
 
-  # GET /commands
-  # GET /commands.json
-  def index
-    @commands = Command.all
-  end
+  before_action :set_command, only: [:edit, :update, :destroy]
 
-  # GET /commands/new
+  #コマンド追加画面
   def new
+    #コマンドを追加する際に、カテゴリidが必要なので、flashに設定する
+    flash[:category_id] = params[:category_id]
     @command = Command.new
   end
 
-  # POST /commands
-  # POST /commands.json
+  #コマンド追加
   def create
-    @command = Command.new(command_params)
-
-    respond_to do |format|
-      if @command.save
-        format.html { redirect_to @command, notice: 'Command was successfully created.' }
-        format.json { render :show, status: :created, location: @command }
-      else
-        format.html { render :new }
-        format.json { render json: @command.errors, status: :unprocessable_entity }
-      end
+    #コマンドをカテゴリに関連づけるために取得する。
+    category = Category.find(params[:category_id])
+    if category.command.create(command_params)
+        command_operation_log(COMMAND_NEW_SUCCESS, params[:command][:name], params[:command][:contents], params[:command][:description])
+        redirect_to command_management_show_url, notice: COMMAND_NEW_SUCCESS
+    else
+        command_operation_log(COMMAND_NEW_FAILURE, params[:command][:name], params[:command][:contents], params[:command][:description])
+        #コマンドを再追加するために必要なコテゴリを再セットする。
+        flash.now[:category_id] = params[:category_id]
+        render :new, alert: COMMAND_NEW_FAILURE
     end
   end
 
-  # PATCH/PUT /commands/1
-  # PATCH/PUT /commands/1.json
+  #コマンド更新
   def update
-    respond_to do |format|
-      if @command.update(command_params)
-        format.html { redirect_to @command, notice: 'Command was successfully updated.' }
-        format.json { render :show, status: :ok, location: @command }
-      else
-        format.html { render :edit }
-        format.json { render json: @command.errors, status: :unprocessable_entity }
-      end
+    if @command.update(command_params)
+      command_operation_log(COMMAND_EDIT_SUCCESS, params[:command][:name], params[:command][:contents], params[:command][:description])
+      redirect_to command_management_show_url, notice: COMMAND_EDIT_SUCCESS
+    else
+      command_operation_log(COMMAND_EDIT_FAILURE, params[:command][:name], params[:command][:contents], params[:command][:description])
+      render :edit, alert: COMMAND_EDIT_FAILURE
     end
   end
 
-  # DELETE /commands/1
-  # DELETE /commands/1.json
+  #コマンド削除
   def destroy
     @command.destroy
-    respond_to do |format|
-      format.html { redirect_to commands_url, notice: 'Command was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    command_operation_log(COMMAND_DESTROY_SUCCESS, @command.name, @command.contents, @command.description)
+    redirect_to command_management_show_url, notice: COMMAND_DESTROY_SUCCESS
   end
-
-
-
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -66,5 +58,8 @@ class CommandsController < ApplicationController
       params.require(:command).permit(:name, :contents, :description)
     end
 
-
+    #コマンド関連の操作でログを残すためのメソッド
+    def command_operation_log(log_message, command_name, command_contents, command_description)
+      logger.debug("#{log_message} category_id:#{params[:category_id]} name:#{command_name} contents:#{command_contents} description:#{command_description}")
+    end
 end

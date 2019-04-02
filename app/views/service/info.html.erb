@@ -48,7 +48,30 @@
         登録したいコマンドの内容            command_contents:
            -内容                           -"rails server start"
       	登録したい内容の説明（空白可能）     command_description:
-      		 -説明                           -"railsサーバーを起動する時に使用するコマンド"
+      		 -説明                           -"
+      例
+      -
+       category_name: rails_command
+       command:
+       -
+        name: "rails start"
+        contents: "rails server start"
+        description: "railsサーバーを起動する時に使用するコマンド"
+       -
+        name: "rails stop"
+        contents: "rails server stop"
+        description: "railsサーバーを起動する時に使用するコマンド"
+      -
+       category_name: "メール定型文"
+       command:
+       -
+        name: "あいさつ"
+        contents: "今日もどうぞよろしくお願いします。"
+        description: "挨拶する時に使用する定型文"
+       -
+        name: "お礼"
+        contents: "今日はありがとうございました。今後ともよろしくお願いします。"
+        description: "お礼の文章を入力する時に使用する定型文"
     </p>
   </div>
 </div>

@@ -1,34 +1,101 @@
+
+
 <div id="command_management_show">
 
   <div id="twitter_share">
     <%#=　当webサービスをツイートするボタンを表示  %>
-    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="簡単にコピペできるようにしたくない？" data-url="http://Copeeeeeeeee.com" data-show-count="false">Tweet</a>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   </div>
 
   <%#=ファイルでコマンドを取り込む  %>
   <div id="take_in_command_with_file">
-    <%= link_to 'ファイル選択', take_in_command_with_file_file_select_path, { id: :file_select }%>
-    <%= link_to 'コマンド取り込み', take_in_command_with_file_teke_in_command_path, { id: :take_in_command }%>
+    <%= form_with(url: take_in_command_with_file_take_in_command_yml_path, local: true, multipart: true ) do %>
+    <label>ymlファイルを指定：
+      <%= file_field_tag :upfile , size: 50 %>
+    </label><%= submit_tag 'コマンドを取り込む' %>
+    <% end %>
+    <%#= コマンド取り込みに失敗したカテゴリとコマンドを表示する。 %>
+    <div  id="take_in_failure_message">
+
+      <% if flash[:take_in_failure_category] %>
+        <p>追加できなかったカテゴリ</p>
+        <% flash[:take_in_failure_category].each do |category_name|%>
+          <p>カテゴリ名：<%= category_name %></p>
+        <% end %>
+      <% end %>
+
+      <% if flash[:take_in_failure_command] %>
+        <p>追加できなかったコマンド</p>
+        <% flash[:take_in_failure_command].each do |category_name, command_name|%>
+          <% logger.debug(command_name) %>
+          <p>カテゴリ名：<%= category_name %> コマンド名：<%= command_name %></p>
+        <% end %>
+      <% end %>
+
+    </div>
   </div>
 
   <%#= コマンドをカテゴリごとに表示する %>
-  <ul id='category_all'>
-    <% @categories.each do |category| %>
-    <li id="category_name"><%= category.name %></li>
-    <%= link_to 'new', category, { class: :category_operation }%>
-    <%= link_to 'edit', edit_command_path(category), { class: :category_operation }%>
-    <%= link_to 'destroy', category, method: :delete, data: { confirm: 'カテゴリを削除してもいいですか？関連するコマンドが全て削除されます。' }, { class: :category_operation }%>
-    <ul id="command_all">
-      <% category.commands.each do |command| %>
-      <li id="command_name"><%= command.name %></li>
-      <li id="command_contents"><%= command.contents %></li>
-      <li id="command_description"><%= command.description %></li>
-      <%= link_to 'new', command, { class: :commands_operation } %>
-      <%= link_to 'edit', edit_command_path(command),  { class: :commands_operation }%>
-      <%= link_to 'destroy', command, method: :delete, data: { confirm: 'コマンドを削除してもいいですか？' }, { class: :commands_operation }%>
-    </ul>
-  </ul>
-  <% end %>
+  <div id="category_all">
+    <% if @categories %>
+      <% @categories.each do |category| %>
+        <ul class='category'>
+          <li class="category_name"><%= category.name %></li>
+          <%= link_to '編集', edit_category_path(category), { class: :category_operation } %>
+          <%= link_to '削除', category, method: :delete, class: :command_operation, data: { confirm: 'カテゴリを削除してもいいですか？関連するコマンドが全て削除されます。' }%>
+          <div id="command_all">
+            <% if category.command %>
+              <% category.command.each do |command| %>
+                <ul class="command">
+                  <li class="command_name"><%= command.name %></li>
+                  <div class="command_contents copy-to-clipboard<%= command.id %>"><%= command.contents %></div>
+                  <button class="clip_borad_btn" data-clipboard-action="copy" data-clipboard-target=".copy-to-clipboard<%= command.id %>">Copy</button>
+                  <li class="command_description"><%= command.description %></li>
+                  <%= link_to '編集', edit_command_path(command),  { class: :command_operation } %>
+                  <%= link_to '削除', command, method: :delete, class: :command_operation, data: { confirm: 'コマンドを削除してもいいですか？' } %>
+                </ul>
+              <% end %><%# category.commands.each %>
+            <% end %><%# if category.commands  %>
+            <%#= コマンドを追加する際に、関連するカテゴリで追加するためにidが必要 %>
+            <%= link_to 'コマンドを追加する', new_command_path(category_id: category.id), { class: :command_operation } %>
+          </div>
+        </ul>
+      <% end %><%# @categories.each  %>
+    <% end %><%# if @categories %>
+    <%= link_to 'カテゴリを追加する', new_category_path, { class: :category_operation } %>
+  </div>
 
 </div>
+
+<!-- クリップボードへコピーするためにclipborad.jsを使用する。 -->
+<!-- 1. Include library -->
+<%= javascript_include_tag 'clipboard.min.js' %>
+
+<!-- 2. Instantiate clipboard -->
+<script>
+  $(document).on('turbolinks:load', function() {
+    // クリップボードに反映させる
+    var clipboard = new ClipboardJS('.clip_borad_btn');
+
+    // クリップボードへの反映に成功した場合
+    clipboard.on('success', function(e) {
+        alert('「' + e.text + '」をコピーしました。')
+    });
+    // クリップボードの反映に失敗した場合
+    clipboard.on('error', function(e) {
+        alert('「' + e.text + '」のコピーに失敗しました。')
+    });
+
+    // コマンドをマウスオーバー、マウスアウトした際に、コマンドの説明を表示・非表示する。
+    //子要素にマウスが移動した際のイベント発生を防ぐために.mouseenter.mouseleaveを利用する。
+    $("#command_all .command")
+    .mouseenter(function (e) {
+      $(this).find(".command_description").slideToggle();
+    })
+    .mouseleave(function (e) {
+      $(this).find(".command_description").slideToggle();
+    });
+
+  });
+</script>

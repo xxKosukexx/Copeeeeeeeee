@@ -19,8 +19,8 @@
       <div id="link">
         <%= link_to 'top', service_entrance_screen_path, { class: :header_link } %>
         <%= link_to 'サービスについて', service_info_path, { class: :header_link } %>
-        <%= link_to 'ユーザー登録', users_new_path, { class: :header_link } %>
-        <%= link_to 'ユーザー削除', users_destroy_path, { class: :header_link } %>
+        <%= link_to 'ユーザー登録', new_user_path, { class: :header_link } %>
+        <%= link_to 'ユーザー削除', users_delete_path, { class: :header_link } %>
         <%= link_to 'ログアウト', authentication_management_logout_path, { class: :header_link } %>
       </div>
     </header>

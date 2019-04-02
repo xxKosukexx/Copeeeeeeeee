@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   before_action :check_logined, except: [:new, :create, :delete, :destroy, :twitter_new, :provider_destroy]
   #ユーザー登録画面を呼び出すためのアクション
   def new
+    @user = User.new
   end
 
   #ユーザー登録画面で入力された情報で、ユーザー登録をする
@@ -32,6 +33,7 @@ class UsersController < ApplicationController
   #ユーザー削除画面を呼び出すためのアクション
   def delete
   end
+
   #ユーザー削除処理を行う
   def destroy
     usr = User.find_by(provider: 'normal', name: params[:name])
@@ -96,7 +98,7 @@ class UsersController < ApplicationController
 
   #ユーザー登録画面に入力された情報を取得する
   def user_params
-    params.require(:user).permit(:provider, :name, :password_digest, :uid)
+    params.require(:user).permit(:provider, :name, :password, :password_confirmation, :uid)
   end
 
   #サービス認証によってユーザー登録を行う
@@ -107,7 +109,7 @@ class UsersController < ApplicationController
     usr = nil
     unless usr = User.find_by(provider: provider_data[:provider], uid: provider_data[:uid])
       self_made_method_log(__method__, "ユーザーが存在しません。provider:#{provider_data[:provider]} uid:#{provider_data[:uid]}")
-      usr = User.new(provider: provider_data[:provider], uid: provider_data[:uid], name: 'test', password_digest: 'test')
+      usr = User.new(provider: provider_data[:provider], uid: provider_data[:uid])
       unless usr.save
         self_made_method_log(__method__, "ユーザー登録に失敗しました。provider:#{provider_data[:provider]} uid:#{provider_data[:uid]}")
         registration_login_flg = false

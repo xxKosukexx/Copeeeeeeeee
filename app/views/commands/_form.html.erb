@@ -18,13 +18,16 @@
 
   <div class="field">
     <%= form.label :contents %>
-    <%= form.text_field :contents %>
+    <%= form.text_area :contents %>
   </div>
 
   <div class="field">
     <%= form.label :description %>
-    <%= form.text_field :description %>
+    <%= form.text_area :description %>
   </div>
+
+  <%#= コマンドを追加する際に、関連するカテゴリで追加するためにidが必要 %>
+  <%= hidden_field_tag :category_id, flash[:category_id] %>
 
   <div class="actions">
     <%= form.submit %>

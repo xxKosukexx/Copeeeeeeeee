@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  has_many :category
+  has_many :category, dependent: :destroy
 
-  #パスワードの検証機能を追加する
+  # パスワードの検証機能を追加する
   # 以下の内容が追加される
   # ・password／password_confirmationプロパティ
   # ・passwordプロパティの必須検証、文字列長検証（72文字以内

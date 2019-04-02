@@ -1,3 +1,19 @@
 // Place all the styles related to the command_management controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#command_all {
+  .command {
+    border: solid 1px #000;
+    .command_name{
+      border: solid 1px #000;
+    }
+    .command_contents{
+      border: solid 1px #000;
+    }
+    .command_description {
+      border: solid 1px #000;
+      display: none;
+    }
+  }
+}

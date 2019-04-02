@@ -1,27 +1,32 @@
 <%= form_with(model: user, local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<% if user.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
-      <ul>
-      <% user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <ul>
+    <% user.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
 
   <div class="field">
     <%= form.label :name, 'ユーザー名' %>
-    <%= form.text_field :name, size: ApplicationController::FORM_FIELD_NAME_SIZE, :maxlength ApplicationController::FORM_FIELD_NAME_MAX_LENGTH %>
+    <%= form.text_field :name, size: ApplicationController::FORM_FIELD_NAME_SIZE, maxlength: ApplicationController::FORM_FIELD_NAME_MAX_LENGTH %>
   </div>
 
   <div class="field">
     <%= form.label :password, 'パスワード' %>
-    <%= form.text_field :password, ApplicationController::FORM_FIELD_PASSWORD_SIZE, :maxlength ApplicationController::FORM_FIELD_PASSWORD_MAX_LENGTH %>
+    <%= form.text_field :password, size: ApplicationController::FORM_FIELD_PASSWORD_SIZE, maxlength: ApplicationController::FORM_FIELD_PASSWORD_MAX_LENGTH %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password_confirmation, 'パスワード' %>
+    <%= form.text_field :password_confirmation, size: ApplicationController::FORM_FIELD_PASSWORD_SIZE, maxlength: ApplicationController::FORM_FIELD_PASSWORD_MAX_LENGTH %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit '登録'%>
   </div>
 <% end %>
