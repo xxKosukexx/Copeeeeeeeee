@@ -4,6 +4,23 @@
     <title>Copeeeeeeeee</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="景山 皓介">
+    <%# twitterのogp設定 %>
+    <meta name="twitter:card" content="summary large image" />
+    <meta name="twitter:title" content="Copeeeeeeeee" />
+    <meta name="twitter:description" content="簡単にコピペできるようにしたくない？" />
+    <meta name="twitter:image" content="<%= asset_url('twitter_ogp.jpg') %>" />
+
+    <%# favicon %>
+    <link rel="icon" href="<%= asset_url('favicon16.ico') %>" sizes="16x16">
+    <link rel="icon" href="<%= asset_url('favicon32.ico') %>" sizes="32x32">
+    <link rel="icon" href="<%= asset_url('favicon64.ico') %>" sizes="64x64">
+
+
+    <%# webclip %>
+    <link rel="apple-touch-icon-precomposed" href=" <%= asset_url('webclip.png') %>" />
+
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
