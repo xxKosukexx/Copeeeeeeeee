@@ -1,7 +1,7 @@
 <%= form_with(model: command, local: true) do |form| %>
   <% if command.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(command.errors.count, "error") %> prohibited this command from being saved:</h2>
+      <h2><%= command.errors.count %> 個のエラーが検出されました。入力欄の修正をお願いします。</h2>
 
       <ul>
       <% command.errors.full_messages.each do |message| %>
@@ -13,17 +13,20 @@
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, size: CommandsController::COMMAND_FIELD_NAME_SIZE,
+                               maxlength: CommandsController::COMMAND_FIELD_NAME_MAX_LENGTH %>
   </div>
 
   <div class="field">
     <%= form.label :contents %>
-    <%= form.text_area :contents %>
+    <%= form.text_area :contents, size: CommandsController::COMMAND_FIELD_CONTENTS_SIZE,
+                                  maxlength: CommandsController::COMMAND_FIELD_CONTENTS_MAX_LENGTH %>
   </div>
 
   <div class="field">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, size: CommandsController::COMMAND_FIELD_DESCRIPTION_SIZE,
+                               maxlength: CommandsController::COMMAND_FIELD_DESCRIPTION_MAX_LENGTH %>
   </div>
 
   <%#= コマンドを追加する際に、関連するカテゴリで追加するためにidが必要 %>

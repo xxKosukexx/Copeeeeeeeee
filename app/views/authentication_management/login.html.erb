@@ -6,12 +6,12 @@
 
     <div class="field">
       <%= form.label :username, 'ユーザー名' %>
-      <%= form.text_field :username, size: ApplicationController::FORM_FIELD_NAME_SIZE, maxlength: ApplicationController::FORM_FIELD_NAME_MAX_LENGTH %>
+      <%= form.text_field :username, size: ApplicationController::USER_FIELD_NAME_SIZE, maxlength: ApplicationController::USER_FIELD_NAME_MAX_LENGTH %>
     </div>
 
     <div class="field">
       <%= form.label :password, 'パスワード' %>
-      <%= form.text_field :password, size: ApplicationController::FORM_FIELD_PASSWORD_SIZE, maxlength: ApplicationController::FORM_FIELD_PASSWORD_MAX_LENGTH %>
+      <%= form.text_field :password, size: ApplicationController::USER_FIELD_PASSWORD_SIZE, maxlength: ApplicationController::USER_FIELD_PASSWORD_MAX_LENGTH %>
     </div>
 
     <%#= ログイン後にリダイレクトするアクションを渡す %>

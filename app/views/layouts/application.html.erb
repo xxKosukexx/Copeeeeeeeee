@@ -17,10 +17,8 @@
     <link rel="icon" href="<%= asset_url('favicon32.ico') %>" sizes="32x32">
     <link rel="icon" href="<%= asset_url('favicon64.ico') %>" sizes="64x64">
 
-
     <%# webclip %>
     <link rel="apple-touch-icon-precomposed" href=" <%= asset_url('webclip.png') %>" />
-
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -33,6 +31,7 @@
       <div id="login_name">
         <%= session[:username] %>
       </div>
+      <% logger.debug("view読み込み開始 time:#{Time.now.to_s}") %>
       <div id="link">
         <%= link_to 'top', service_entrance_screen_path, { class: :header_link } %>
         <%= link_to 'サービスについて', service_info_path, { class: :header_link } %>

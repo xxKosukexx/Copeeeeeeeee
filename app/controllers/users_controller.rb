@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  NORMAL_USER_AUTH_SUCCESS_MESSAGE = "ユーザー認証に成功しました。"
-  NORMAL_USER_AUTH_FAILURE_MESSAGE = "ユーザー認証に失敗しました。"
+  NORMAL_USER_AUTH_SUCCESS_MESSAGE = "ユーザー登録に成功しました。"
+  NORMAL_USER_AUTH_ALREADY_EXISTS_MESSAGE = "すでに使用されているユーザー名です。"
+  NORMAL_USER_AUTH_FAILURE_MESSAGE = "ユーザー登録に失敗しました。"
   NORMAL_USER_DESTROY_SUCCESS_MESSAGE = "ユーザー情報を削除しました。"
   NORMAL_USER_DESTROY_NOT_EXIST_MESSAGE = "ユーザー情報が既に存在しません。"
   PROVIDER_USER_AUTH_SUCCESS_MESSAGE = "サービス認証に成功しました。"
@@ -16,17 +17,26 @@ class UsersController < ApplicationController
 
   #ユーザー登録画面で入力された情報で、ユーザー登録をする
   def create
-    usr = User.new(user_params)
-    #サービス認証でないことを表す
-    usr.provider ='normal'
-    if usr.save
-      #ログイン状態にする
-      login_session(user_id: usr.id, username: usr.name)
-      #コマンド管理画面に推移する
-      redirect_to command_management_show_url, notice: NORMAL_USER_AUTH_SUCCESS_MESSAGE
+    # ユーザーがすでに存在していないことを確認する。（一意性の検証）
+    if User.find_by(name: params[:user][:name])
+      logger.debug("#{NORMAL_USER_AUTH_ALREADY_EXISTS_MESSAGE} name:#{params[:user][:name]}")
+      render :new, notice: NORMAL_USER_AUTH_ALREADY_EXISTS_MESSAGE
     else
-      #ユーザー登録画面を再描画
-      render action: :new, alert: NORMAL_USER_AUTH_FAILURE_MESSAGE
+      # createメソッドで追加すると検証メッセージが表示されないため、newメソッドを使用する。
+      @user = User.new(user_params)
+      #サービス認証でないことを表す
+      @user.provider ='normal'
+      if @user.save
+        #ログイン状態にする
+        login_session(user_id: @user.id, username: @user.name)
+        user_operation_log(NORMAL_USER_AUTH_SUCCESS_MESSAGE, params[:user][:name], params[:user][:password])
+        #コマンド管理画面に推移する
+        redirect_to command_management_show_url, notice: NORMAL_USER_AUTH_SUCCESS_MESSAGE
+      else
+        #ユーザー登録画面を再描画
+        user_operation_log(NORMAL_USER_AUTH_FAILURE_MESSAGE, params[:user][:name], params[:user][:password])
+        render :new
+      end
     end
   end
 
@@ -63,8 +73,10 @@ class UsersController < ApplicationController
     registration_login_result = provider_registration_and_login(provider_data)
     if registration_login_result
       #ユーザー登録がされている状態になったら、コマンド管理画面へ推移する。
+      logger.debug("#{PROVIDER_USER_AUTH_SUCCESS_MESSAGE} provider_data:#{provider_data}")
       redirect_to command_management_show_url, notice: PROVIDER_USER_AUTH_SUCCESS_MESSAGE
     else
+      logger.debug("#{PROVIDER_USER_AUTH_FAILURE_MESSAGE} provider_data:#{provider_data}")
       redirect_to root_url, alert: PROVIDER_USER_AUTH_FAILURE_MESSAGE
     end
   end
@@ -74,7 +86,8 @@ class UsersController < ApplicationController
   def provider_destroy
     provider_name = ""
     if usr = User.find_by(id: session[:user_id])
-      provider_name = usr.destroy
+      provider_name = usr.provider
+      usr.destroy
       self_made_method_log(__method__, "#{provider_name}認証による削除情報{user_id:#{usr.id}uid:#{usr.uid}")
       usr.destroy
       reset_session
@@ -109,7 +122,16 @@ class UsersController < ApplicationController
     usr = nil
     unless usr = User.find_by(provider: provider_data[:provider], uid: provider_data[:uid])
       self_made_method_log(__method__, "ユーザーが存在しません。provider:#{provider_data[:provider]} uid:#{provider_data[:uid]}")
-      usr = User.new(provider: provider_data[:provider], uid: provider_data[:uid])
+      # サービス認証でユーザー登録する場合、
+      # validatesで設定した検証に通るような値を入力する必要がある。
+      # 未入力や不正な値だとvalidates検証によってユーザー登録ができない。
+      usr = User.new(provider: provider_data[:provider],
+                     uid: provider_data[:uid],
+                     # nameプロパティのデフォルト値を設定すると、ユーザー登録時
+                     # の入力欄に初期値として表示されるため、追加する際に入力する。
+                     name: 'Coppppppp',
+                     password: 'Copeeeee',
+                     password_confirmation: 'Copeeeee')
       unless usr.save
         self_made_method_log(__method__, "ユーザー登録に失敗しました。provider:#{provider_data[:provider]} uid:#{provider_data[:uid]}")
         registration_login_flg = false
@@ -125,6 +147,9 @@ class UsersController < ApplicationController
       return false
     end
   end
-
+  # user操作に関するログを残す
+  def user_operation_log(log_message, name, password)
+    logger.debug("#{log_message}name:#{name} password:#{password}")
+  end
 
 end

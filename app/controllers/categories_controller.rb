@@ -1,9 +1,14 @@
 class CategoriesController < ApplicationController
+  # カテゴリ操作で表示するメッセージ
   CATEGORY_NEW_SUCCESS = "カテゴリの追加に成功しました。"
   CATEGORY_NEW_FAILURE = "カテゴリの追加に失敗しました。"
   CATEGORY_EDIT_SUCCESS = "カテゴリの編集に成功しました。"
   CATEGORY_EDIT_FAILURE = "カテゴリの編集に失敗しました。"
   CATEGORY_DESTROY_SUCCESS = "カテゴリの削除に成功しました。"
+
+  # カテゴリモデルのfieldで使用する定数
+  CATEGORY_FIELD_NAME_SIZE = 25
+  CATEGORY_FIELD_NAME_MAX_LENGTH = 20
 
   before_action :set_category, only: [:edit, :update, :destroy]
 
@@ -16,23 +21,25 @@ class CategoriesController < ApplicationController
   def create
     # カテゴリをユーザーに関連づけるために取得する。
     user = User.find(session[:user_id])
-    if user.category.create(category_params)
+    # createメソッドで追加すると検証メッセージが表示されないため、newメソッドを使用する。
+    @category = user.category.new(category_params)
+    if @category.save(category_params)
       category_operation_log(CATEGORY_NEW_SUCCESS, params[:category][:name])
       redirect_to command_management_show_url, notice: CATEGORY_NEW_SUCCESS
     else
       category_operation_log(CATEGORY_NEW_FAILURE, params[:category][:name])
-      render :new, alert: CATEGORY_NEW_FAILURE
+      render :new
     end
   end
 
   # カテゴリ更新
   def update
     if @category.update(category_params)
-      category_operation_log(CATEGORY_EDIT_SUCCESS, params[:category][:name])
-      redirect_to command_management_show_url, notice: CATEGORY_EDIT_SUCCESS
+        category_operation_log(CATEGORY_EDIT_SUCCESS, params[:category][:name])
+        redirect_to command_management_show_url, notice: CATEGORY_EDIT_SUCCESS
     else
-      category_operation_log(CATEGORY_EDIT_FAILURE, params[:category][:name])
-      render :edit, alert: CATEGORY_EDIT_FAILURE
+        category_operation_log(CATEGORY_EDIT_FAILURE, params[:category][:name])
+        render :edit
     end
   end
 

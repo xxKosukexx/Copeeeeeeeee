@@ -1,4 +1,8 @@
 class AuthenticationManagementController < ApplicationController
+  LOGIN_MESSAGE = "ログインしました。"
+  LOGOUT_MESSAGE = "ログアウトしました。"
+  LOGIN_ERROR = "ユーザ名/パスワードが間違っています"
+
   before_action :check_logined, except: [:login, :auth, :twitter_auth, :logout]
   #ログイン画面表示用
   def login
@@ -14,11 +18,12 @@ class AuthenticationManagementController < ApplicationController
       reset_session
       #ログイン状態にする
       login_session(user_id: usr.id, username: usr.name)
-      redirect_to params[:after_login_page]
+      redirect_to params[:after_login_page], notice: LOGIN_MESSAGE
     else
       #失敗した場合はflash[:after_login_page]を再セットし、ログインページを再描画
       flash.now[:after_login_page] = params[:after_login_page]
-      @error = 'ユーザ名/パスワードが間違っています'
+      @error = LOGIN_ERROR
+      logger.debug(LOGIN_ERROR)
       render :login
     end
   end
@@ -39,8 +44,9 @@ class AuthenticationManagementController < ApplicationController
 
   #ログアウトに関するアクション
   def logout
+    logger.debug("#{LOGOUT_MESSAGE} user_id:#{session[:user_id]} username:#{session[:username]}")
     reset_session   #セッションを破棄する
-    redirect_to root_path #トップページに推移する
+    redirect_to root_path, notice: LOGOUT_MESSAGE #トップページに推移する
   end
 
 

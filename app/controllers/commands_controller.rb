@@ -1,9 +1,18 @@
 class CommandsController < ApplicationController
+  # コマンド操作で表示するメッセージ
   COMMAND_NEW_SUCCESS = "コマンドの追加に成功しました。"
   COMMAND_NEW_FAILURE = "コマンドの追加に失敗しました。"
   COMMAND_EDIT_SUCCESS = "コマンドの編集に成功しました。"
   COMMAND_EDIT_FAILURE = "コマンドの編集に失敗しました。"
   COMMAND_DESTROY_SUCCESS = "コマンドの削除に成功しました。"
+
+  # commandモデルのfieldで使用する定数。
+  COMMAND_FIELD_NAME_SIZE = 25
+  COMMAND_FIELD_NAME_MAX_LENGTH = 20
+  COMMAND_FIELD_CONTENTS_SIZE = 105
+  COMMAND_FIELD_CONTENTS_MAX_LENGTH = 100
+  COMMAND_FIELD_DESCRIPTION_SIZE = 205
+  COMMAND_FIELD_DESCRIPTION_MAX_LENGTH = 200
 
   before_action :set_command, only: [:edit, :update, :destroy]
 
@@ -18,25 +27,27 @@ class CommandsController < ApplicationController
   def create
     #コマンドをカテゴリに関連づけるために取得する。
     category = Category.find(params[:category_id])
-    if category.command.create(command_params)
+    # createメソッドで追加すると検証メッセージが表示されないため、newメソッドを使用する。
+    @command = category.command.new(command_params)
+    if @command.save
         command_operation_log(COMMAND_NEW_SUCCESS, params[:command][:name], params[:command][:contents], params[:command][:description])
         redirect_to command_management_show_url, notice: COMMAND_NEW_SUCCESS
     else
         command_operation_log(COMMAND_NEW_FAILURE, params[:command][:name], params[:command][:contents], params[:command][:description])
         #コマンドを再追加するために必要なコテゴリを再セットする。
         flash.now[:category_id] = params[:category_id]
-        render :new, alert: COMMAND_NEW_FAILURE
+        render :new
     end
   end
 
   #コマンド更新
   def update
     if @command.update(command_params)
-      command_operation_log(COMMAND_EDIT_SUCCESS, params[:command][:name], params[:command][:contents], params[:command][:description])
-      redirect_to command_management_show_url, notice: COMMAND_EDIT_SUCCESS
+        command_operation_log(COMMAND_EDIT_SUCCESS, params[:command][:name], params[:command][:contents], params[:command][:description])
+        redirect_to command_management_show_url, notice: COMMAND_EDIT_SUCCESS
     else
-      command_operation_log(COMMAND_EDIT_FAILURE, params[:command][:name], params[:command][:contents], params[:command][:description])
-      render :edit, alert: COMMAND_EDIT_FAILURE
+        command_operation_log(COMMAND_EDIT_FAILURE, params[:command][:name], params[:command][:contents], params[:command][:description])
+        render :edit
     end
   end
 

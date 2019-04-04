@@ -1,7 +1,7 @@
 <%= form_with(model: category, local: true) do |form| %>
   <% if category.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
+      <h2><%= category.errors.count %> 個のエラーが検出されました。入力欄の修正をお願いします。</h2>
 
       <ul>
       <% category.errors.full_messages.each do |message| %>
@@ -13,7 +13,8 @@
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, size: CategoriesController::CATEGORY_FIELD_NAME_SIZE,
+                               maxlength: CategoriesController::CATEGORY_FIELD_NAME_MAX_LENGTH %>
   </div>
 
   <div class="actions">
