@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.4.1'
+ruby '2.5.3'
 
 #use database mysql
 gem 'mysql2'
@@ -11,7 +11,7 @@ gem 'bcrypt'
 
 #認証をするため。
 gem 'omniauth'
-gem 'omniauth-twitter'
+gem 'omniauth-twitter'
 
 #railsの環境変数用
 gem 'dotenv-rails'

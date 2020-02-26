@@ -1,15 +1,23 @@
 <div id="entrance_screen">
   <div id="entrance_comment">
     <p>
-      当webサービスは定型文等、なんども入力するための文章等を簡単にコピペするサービスです。
+      当webサービスは定型文等を簡単にコピペするサービスです。
       作業効率化のお役に経てればと思います。
     </p>
   </div>
   <div id="authentication">
-    <%= link_to 'ユーザー登録', new_user_path, { id: :authentication_user } %>
-    <%= link_to 'ログイン', authentication_management_login_path, { id: :authentication_login } %>
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-6">
+                  <%= link_to 'ユーザー登録', new_user_path, { id: :authentication_user, class: "btn btn-info"} %>
+              </div>
+              <div class="col-6">
+                  <%= link_to 'ログイン', authentication_management_login_path, { id: :authentication_login, class: "btn btn-info" } %>
+              </div>
+          </div>
+      </div>
   </div>
   <div id="twitter_auth">
-    <%= link_to 'Twitte認証', auth_twitter_path, { class: :twitter_button } %>
+    <%= link_to 'Twitte認証', auth_twitter_path, { class: "twitter_button btn btn-info" } %>
   </div>
 </div>
